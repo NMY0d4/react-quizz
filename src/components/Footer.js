@@ -1,10 +1,10 @@
 import NextButton from './NextButton';
 import Timer from './Timer';
 
-function Footer({ dispatch, answer, i, numQuestions }) {
+function Footer({ dispatch, answer, i, numQuestions, secondsRemaining }) {
   return (
     <footer>
-      <Timer />
+      <Timer dispatch={dispatch} secondsRemaining={secondsRemaining} />
       <NextButton
         dispatch={dispatch}
         answer={answer}

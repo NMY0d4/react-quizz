@@ -9,6 +9,8 @@ import Progress from './Progress';
 import FinishScreen from './FinishScreen';
 import Footer from './Footer';
 
+const SECS_PER_QUESTION = 30;
+
 const initialState = {
   questions: [],
   status: 'loading',
@@ -16,6 +18,7 @@ const initialState = {
   answer: null,
   points: 0,
   highscore: 0,
+  secondsRemaining: null,
 };
 
 function reducer(state, action) {
@@ -30,7 +33,11 @@ function reducer(state, action) {
         status: 'error',
       };
     case 'start':
-      return { ...state, status: 'active' };
+      return {
+        ...state,
+        status: 'active',
+        secondsRemaining: state.questions.length * SECS_PER_QUESTION,
+      };
     case 'newAnswer':
       const { correctOption, points } = state.questions.at(state.index);
       return {
@@ -55,6 +62,12 @@ function reducer(state, action) {
         status: 'ready',
         questions: state.questions,
       };
+    case 'tick':
+      return {
+        ...state,
+        secondsRemaining: state.secondsRemaining - 1,
+        status: state.secondsRemaining === 0 ? 'finished' : state.status,
+      };
 
     default:
       throw new Error('Action unknown');
@@ -62,8 +75,10 @@ function reducer(state, action) {
 }
 
 export default function App() {
-  const [{ questions, status, index, answer, points, highscore }, dispatch] =
-    useReducer(reducer, initialState);
+  const [
+    { questions, status, index, answer, points, highscore, secondsRemaining },
+    dispatch,
+  ] = useReducer(reducer, initialState);
 
   const numQuestions = questions.length;
   const maxPoints = questions.reduce(
@@ -106,6 +121,7 @@ export default function App() {
               answer={answer}
               i={index}
               numQuestions={numQuestions}
+              secondsRemaining={secondsRemaining}
             />
           </>
         )}

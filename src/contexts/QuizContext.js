@@ -72,6 +72,12 @@ function QuizProvider({ children }) {
     { questions, status, index, answer, points, highscore, secondsRemaining },
     dispatch,
   ] = useReducer(quizReducer, quizInitialState);
+  const question = questions[index];
+  const numQuestions = questions.length;
+  const maxPoints = questions.reduce(
+    (maxPoints, q) => +q.points + maxPoints,
+    0
+  );
 
   useEffect(function () {
     fetch('http://localhost:9000/questions')
@@ -91,6 +97,9 @@ function QuizProvider({ children }) {
         highscore,
         secondsRemaining,
         dispatch,
+        question,
+        maxPoints,
+        numQuestions,
       }}
     >
       {children}
@@ -102,6 +111,7 @@ function useQuiz() {
   const context = useContext(QuizContext);
   if (context === undefined)
     throw new Error('QuizContext was used outside QuizProvider');
+  return context;
 }
 
 export { QuizProvider, useQuiz };

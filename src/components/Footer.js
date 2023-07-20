@@ -1,4 +1,3 @@
-import { useQuiz } from '../contexts/QuizContext';
 import NextButton from './NextButton';
 import Timer from './Timer';
 

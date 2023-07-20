@@ -1,16 +1,12 @@
+import { useQuiz } from '../contexts/QuizContext';
 import NextButton from './NextButton';
 import Timer from './Timer';
 
-function Footer({ dispatch, answer, i, numQuestions, secondsRemaining }) {
+function Footer() {
   return (
     <footer>
-      <Timer dispatch={dispatch} secondsRemaining={secondsRemaining} />
-      <NextButton
-        dispatch={dispatch}
-        answer={answer}
-        i={i}
-        numQuestions={numQuestions}
-      />
+      <Timer />
+      <NextButton />
     </footer>
   );
 }
